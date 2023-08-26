@@ -1,3 +1,3 @@
-library atom;
+library atom_notifier;
 
 export "./notifier.dart";

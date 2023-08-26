@@ -1,4 +1,4 @@
-import 'package:atom/atom.dart';
+import 'package:atom_notifier/atom_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
