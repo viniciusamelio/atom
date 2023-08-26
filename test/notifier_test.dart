@@ -56,21 +56,21 @@ void main() {
         "sut should support AtomAppState with DefaultState mixin successfully ",
         () async {
           int counter = 2;
-          final atom = AtomNotifier<AtomAppState<String, int>>(InitialState());
-          atom.onState(
+          final sut = AtomNotifier<AtomAppState<String, int>>(InitialState());
+          sut.onState(
             onError: (e) => counter++,
             onSuccess: (e) => counter--,
             onLoading: () => counter = counter * 2,
           );
-          atom.set(LoadingState());
+          sut.set(LoadingState());
 
           expect(counter, equals(4));
 
-          atom.fromError("Error");
+          sut.fromError("Error");
 
           expect(counter, equals(5));
 
-          atom.fromSuccess(2);
+          sut.fromSuccess(2);
 
           expect(counter, equals(4));
         },

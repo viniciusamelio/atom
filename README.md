@@ -124,4 +124,15 @@ You can use MultiAtomObserver to handle more than one atom at once in the same w
     ),
 ```
 
+## Application States
+Usually your controllers will have some kind of behaviour just like the example I showed on PolymorphicAtomObserver, where you want your UI to reflect the usecase/service/whatever status. You can use 
+AtomAppState which by default has an extension that makes it easier to add listeners to it.
 
+```dart
+    final atom = AtomNotifier<AtomAppState<String, int>>(InitialState());
+    atom.onState(
+      onError: (e) => counter++,
+      onSuccess: (e) => counter--,
+      onLoading: () => counter = counter * 2,
+    );
+```

@@ -1,6 +1,6 @@
 name: atom_notifier
 description: An easy to use value notifier wrapper with some sugar syntax
-version: 0.0.1
+version: 1.0.0
 homepage:
 
 environment:
