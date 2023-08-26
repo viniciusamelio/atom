@@ -8,13 +8,13 @@ void main() {
       test(
         "sut should executes listener successfully",
         () {
-          final atom = AtomNotifier<int>(1);
+          final sut = AtomNotifier<int>(1);
           bool listenerRan = false;
-          atom.listen((_) {
+          sut.listen((_) {
             listenerRan = true;
           });
 
-          atom.set(2);
+          sut.set(2);
 
           expect(listenerRan, true);
         },
@@ -23,29 +23,58 @@ void main() {
       test(
         "sut should executes listener successfully when using on()",
         () {
-          final atom = AtomNotifier<State?>(null);
+          final sut = AtomNotifier<State?>(null);
           bool listenerRan = false;
-          atom.on<RightState>((_) => listenerRan = true);
-          atom.on<WrongState>((_) => listenerRan = false);
+          sut.on<RightState>((_) => listenerRan = true);
+          sut.on<WrongState>((_) => listenerRan = false);
 
-          atom.set(RightState());
+          sut.set(RightState());
 
           expect(listenerRan, true);
         },
       );
 
       test("sut should stop all atom usage after being disposed", () {
-        final atom = AtomNotifier<State?>(null);
+        final sut = AtomNotifier<State?>(null);
         bool listenerRan = true;
-        atom.on<WrongState>((_) => listenerRan = false);
+        sut.on<WrongState>((_) => listenerRan = false);
 
-        atom.set(WrongState());
-        atom.dispose();
+        sut.set(WrongState());
+        sut.dispose();
 
         expect(listenerRan, isFalse);
 
-        expect(() => atom.set(RightState()), throwsFlutterError);
+        expect(() => sut.set(RightState()), throwsFlutterError);
       });
+    },
+  );
+
+  group(
+    "AtomAppState: ",
+    () {
+      test(
+        "sut should support AtomAppState with DefaultState mixin successfully ",
+        () async {
+          int counter = 2;
+          final atom = AtomNotifier<AtomAppState<String, int>>(InitialState());
+          atom.onState(
+            onError: (e) => counter++,
+            onSuccess: (e) => counter--,
+            onLoading: () => counter = counter * 2,
+          );
+          atom.set(LoadingState());
+
+          expect(counter, equals(4));
+
+          atom.fromError("Error");
+
+          expect(counter, equals(5));
+
+          atom.fromSuccess(2);
+
+          expect(counter, equals(4));
+        },
+      );
     },
   );
 }
