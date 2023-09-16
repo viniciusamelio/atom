@@ -19,4 +19,7 @@ abstract class ListenableAtom<T> extends Atom<T> {
 
   /// Adds a listener which executes whee value is set as E
   void on<E extends T>(AtomListener<E> listener);
+
+  // Clean all listeners
+  void removeListeners();
 }

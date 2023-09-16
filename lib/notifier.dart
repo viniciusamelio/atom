@@ -6,7 +6,7 @@ import 'types.dart';
 class AtomNotifier<T> implements ListenableAtom<T> {
   AtomNotifier(T value) : _notifier = ValueNotifier(value);
 
-  late final ValueNotifier<T> _notifier;
+  late ValueNotifier<T> _notifier;
 
   @override
   void set(T value) {
@@ -15,7 +15,9 @@ class AtomNotifier<T> implements ListenableAtom<T> {
 
   @override
   void listen(AtomListener<T> listener) {
-    _notifier.addListener(() => listener(_notifier.value));
+    _notifier.addListener(() {
+      listener(_notifier.value);
+    });
   }
 
   @override
@@ -44,6 +46,13 @@ class AtomNotifier<T> implements ListenableAtom<T> {
 
   @override
   T get value => _notifier.value;
+
+  @override
+  void removeListeners() {
+    final currentValue = value;
+    _notifier.dispose();
+    _notifier = ValueNotifier(currentValue);
+  }
 }
 
 class AtomObserver<T> extends StatelessWidget {
@@ -71,13 +80,13 @@ class MultiAtomObserver extends StatelessWidget {
     required this.builder,
   });
   final List<AtomNotifier> atoms;
-  final AtomBuilder builder;
+  final Widget Function(BuildContext context) builder;
 
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
       animation: Listenable.merge(atoms.map((e) => e._notifier).toList()),
-      builder: (context, widget) => builder(context, widget),
+      builder: (context, widget) => builder(context),
     );
   }
 }

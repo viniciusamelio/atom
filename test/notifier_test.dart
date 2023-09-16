@@ -46,6 +46,24 @@ void main() {
 
         expect(() => sut.set(RightState()), throwsFlutterError);
       });
+
+      test("sut should remove non-filtered listener successfully", () async {
+        final sut = AtomNotifier<int>(0);
+        int counter = 0;
+        void listener(int value) {
+          counter++;
+        }
+
+        sut.listen(listener);
+
+        sut.set(1);
+        expect(counter, equals(1));
+
+        sut.removeListeners();
+        sut.set(2);
+
+        expect(counter, equals(1));
+      });
     },
   );
 
