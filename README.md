@@ -116,7 +116,7 @@ You can use MultiAtomObserver to handle more than one atom at once in the same w
 ```dart
     MultiAtomObserver(
         atoms: [index, character],
-        builder: (context, state) {
+        builder: (context) {
           final name = character.value;
           final id = index.value;
           return Text("$id: $name");
