@@ -1,4 +1,5 @@
 import 'package:atom_notifier/atom_notifier.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -91,6 +92,40 @@ void main() {
           sut.fromSuccess(2);
 
           expect(counter, equals(4));
+        },
+      );
+      testWidgets(
+        "sut should show dialog on error state",
+        (tester) async {
+          final sut =
+              AtomNotifier<AtomAppState<Exception, String>>(InitialState());
+
+          await tester.pumpWidget(
+            MaterialApp(
+              home: Builder(builder: (context) {
+                sut.onState(
+                  onError: (error) {
+                    showDialog(
+                      context: context,
+                      builder: (context) => const Dialog(
+                        child: Text("Dialog Widget"),
+                      ),
+                    );
+                  },
+                );
+                return const Scaffold();
+              }),
+            ),
+          );
+
+          expect(find.byType(Dialog), findsNothing);
+
+          sut.set(ErrorState(Exception("Error")));
+
+          await tester.pumpAndSettle();
+
+          expect(find.byType(Dialog), findsOneWidget);
+          expect(find.text("Dialog Widget"), findsOneWidget);
         },
       );
     },
