@@ -1,6 +1,8 @@
+import 'package:flutter/material.dart';
+
 import 'types.dart';
 
-abstract class Atom<T> {
+abstract class Atom<T> implements Listenable {
   const Atom();
 
   T get value;

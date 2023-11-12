@@ -53,6 +53,16 @@ class AtomNotifier<T> implements ListenableAtom<T> {
     _notifier.dispose();
     _notifier = ValueNotifier(currentValue);
   }
+
+  @override
+  void addListener(VoidCallback listener) {
+    _notifier.addListener(listener);
+  }
+
+  @override
+  void removeListener(VoidCallback listener) {
+    _notifier.removeListener(listener);
+  }
 }
 
 class AtomObserver<T> extends StatelessWidget {

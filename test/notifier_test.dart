@@ -22,6 +22,40 @@ void main() {
       );
 
       test(
+        "sut should executes listener successfully when adding it from addListener method",
+        () {
+          final sut = AtomNotifier<int>(1);
+          bool listenerRan = false;
+          sut.addListener(() {
+            listenerRan = true;
+          });
+
+          sut.set(2);
+
+          expect(listenerRan, true);
+        },
+      );
+
+      test(
+        "sut should remove listener successfully when calling removeListener",
+        () {
+          final sut = AtomNotifier<int>(1);
+          bool listenerRan = false;
+          // ignore: prefer_function_declarations_over_variables
+          final callback = () {
+            listenerRan = !listenerRan;
+          };
+
+          sut.addListener(callback);
+          sut.set(2);
+          sut.removeListener(callback);
+          sut.set(3);
+
+          expect(listenerRan, true);
+        },
+      );
+
+      test(
         "sut should executes listener successfully when using on()",
         () {
           final sut = AtomNotifier<State?>(null);
