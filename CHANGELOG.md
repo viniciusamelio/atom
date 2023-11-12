@@ -1,3 +1,6 @@
+## 1.0.4
+- Added AtomInputController which extends TextEditingController
+
 ## 1.0.3
 - Changed: Making Atom an Listenable by implementing ValueListenable<T>
 
