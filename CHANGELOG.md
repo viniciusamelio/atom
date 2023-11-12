@@ -1,5 +1,5 @@
-## 1.0.2
-- Changed: Making Atom an Listenable by implementing this
+## 1.0.3
+- Changed: Making Atom an Listenable by implementing ValueListenable<T>
 
 ## 1.0.1
 - Fix: Removed unexisting state parameter reference from MultiAtomObserver

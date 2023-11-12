@@ -1,10 +1,11 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 
 import 'types.dart';
 
-abstract class Atom<T> implements Listenable {
+abstract class Atom<T> implements ValueListenable<T> {
   const Atom();
 
+  @override
   T get value;
 
   /// Sets a given value for this atom
