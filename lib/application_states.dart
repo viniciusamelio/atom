@@ -54,3 +54,13 @@ extension DefaultState<E, S> on AtomNotifier<AtomAppState<E, S>> {
     }
   }
 }
+
+extension TypedState<L, R> on AtomAppState<L, R> {
+  SuccessState<L, R> asSuccess() => (this as SuccessState<L, R>);
+  ErrorState<L, R> asError() => (this as ErrorState<L, R>);
+  LoadingState<L, R> asLoading() => (this as LoadingState<L, R>);
+
+  bool isSuccess() => (this is SuccessState<L, R>);
+  bool isError() => (this is ErrorState<L, R>);
+  bool isLoading() => (this is LoadingState<L, R>);
+}

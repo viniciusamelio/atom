@@ -9,7 +9,7 @@ void main() {
       (tester) async {
         final controller = AtomInputController();
         String content = "";
-        controller.set((value) {
+        controller.listen((value) {
           content = value ?? "";
         });
 
@@ -35,7 +35,7 @@ void main() {
       (tester) async {
         final controller = AtomInputController();
         String content = "";
-        controller.set((value) {
+        controller.listen((value) {
           content = value ?? "";
         });
 

@@ -1,3 +1,7 @@
+## 1.1.0
+- Added TypedState extension, to get & check atom app stats easier than before
+- Changed: set() method to listen() on [AtomInputController] 
+
 ## 1.0.4
 - Added AtomInputController which extends TextEditingController
 

@@ -128,6 +128,33 @@ void main() {
           expect(counter, equals(4));
         },
       );
+
+      test(
+        "sut should render widget according to checking made through TypedState extension",
+        () {
+          String state = "Initial";
+          final sut = AtomNotifier<AtomAppState<String, int>>(InitialState());
+          sut.listen((value) {
+            if (value.isSuccess()) {
+              state = "Success";
+            } else if (value.isLoading()) {
+              state = "Loading";
+            } else if (value.isError()) {
+              state = "Error";
+            }
+          });
+
+          sut.set(LoadingState());
+          expect(state, equals("Loading"));
+
+          sut.fromError("Error");
+          expect(sut.value.asError().error, equals("Error"));
+
+          sut.set(const SuccessState(2));
+          expect(state, equals("Success"));
+          expect(sut.value.asSuccess().data, equals(2));
+        },
+      );
       testWidgets(
         "sut should show dialog on error state",
         (tester) async {
