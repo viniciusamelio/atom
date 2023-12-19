@@ -78,12 +78,10 @@ void main() {
                   atom: sut,
                   defaultBuilder: (value) => const Text("It is null"),
                   types: [
-                    TypedAtomHandler(
-                      type: Player,
+                    TypedAtomHandler<Player>(
                       builder: (context, value) => const Text("Player"),
                     ),
-                    TypedAtomHandler(
-                      type: NPC,
+                    TypedAtomHandler<NPC>(
                       builder: (context, value) => const Text("NPC"),
                     ),
                   ],

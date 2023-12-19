@@ -101,16 +101,15 @@ class MultiAtomObserver extends StatelessWidget {
   }
 }
 
-typedef TypedAtomBuilder<T> = Widget Function(BuildContext, T);
+typedef TypedAtomBuilder<T> = Widget Function(BuildContext context, T state);
 
 class TypedAtomHandler<T> {
   const TypedAtomHandler({
-    required this.type,
     required this.builder,
   });
 
-  final Type type;
-  final TypedAtomBuilder<T> builder;
+  final TypedAtomBuilder builder;
+  Type get type => T;
 }
 
 class PolymorphicAtomObserver<T> extends StatelessWidget {
@@ -122,14 +121,14 @@ class PolymorphicAtomObserver<T> extends StatelessWidget {
     required this.types,
   });
 
-  /// Default widget to be used when current type is handled
+  /// Default widget to be used when current type is not handled
   final Widget Function(T? value)? defaultBuilder;
   final List<TypedAtomHandler<T>> types;
   final AtomNotifier<T> atom;
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder(
+    return ValueListenableBuilder<T>(
       valueListenable: atom._notifier,
       builder: (context, value, _) {
         for (var event in types) {
