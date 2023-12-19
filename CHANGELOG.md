@@ -1,7 +1,7 @@
 ## 1.1.0
 - Added TypedState extension, to get & check atom app stats easier than before
-- Changed: set() method to listen() on [AtomInputController] 
-
+- BREAKING CHANGE: set() method to listen() on [AtomInputController] 
+- BREAKING CHANGE: removing type property from [TypedAtomHandler]. You should be able now to set the state type with generics
 ## 1.0.4
 - Added AtomInputController which extends TextEditingController
 
