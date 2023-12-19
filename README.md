@@ -100,12 +100,10 @@ But, there will be cases where you have more complexes states, a async request s
         atom: myAtom,
         defaultBuilder: (value) => const Text("Initial or Error"),
         types: [
-          TypedAtomHandler(
-            type: LoadingState,
+          TypedAtomHandler<LoadingState>(
             builder: (context, value) => const CircularProgressIndicator(),
           ),
-          TypedAtomHandler(
-            type: SuccessState,
+          TypedAtomHandler<SuccessState>(
             builder: (context, value) => const Text("Success, dude!"),
           ),
         ],
