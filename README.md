@@ -5,7 +5,7 @@ An easy to use Flutter's Value Notifier wrapper with some sugar syntax. It provi
 Add atom as a dependency:
 
 ```yaml
-    atom_notifier: 1.0.0
+    atom_notifier: 1.1.1
 ```
 
 Or running following command on terminal:
