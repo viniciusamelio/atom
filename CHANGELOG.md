@@ -1,3 +1,6 @@
+## 1.2.0
+- Added GetxAtomNotifier class
+- Added notifier() and getxNotifier() factories to ListenableAtom
 ## 1.1.0
 - Added TypedState extension, to get & check atom app stats easier than before
 - BREAKING CHANGE: set() method to listen() on [AtomInputController] 
