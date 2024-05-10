@@ -53,6 +53,12 @@ final atom = AtomNotifier<int>(1);
 atom.listen((value){
     doSomething();
 });
+
+// With Getx Atom
+final atom = GetxAtomNotifier<int>(1);
+atom.listen((value){
+    doSomething();
+});
 ```
 
 ### Listening to specific state
@@ -68,6 +74,12 @@ notifier.addListener((){
 
 // With Atom
 final atom = AtomNotifier<int>(1);
+atom.on<MyType>((value){
+    doSomething();
+});
+
+// With Getx Atom
+final atom = GetxAtomNotifier<int>(1);
 atom.on<MyType>((value){
     doSomething();
 });
