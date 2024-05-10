@@ -1,7 +1,58 @@
 import 'package:flutter/widgets.dart';
+import 'package:get/get.dart';
 
 import 'interfaces.dart';
 import 'types.dart';
+
+class GetxAtomNotifier<T> implements ListenableAtom<T> {
+  GetxAtomNotifier(T value) : _rx = Rx(value);
+
+  final Rx<T> _rx;
+
+  @override
+  void addListener(VoidCallback listener) {
+    _rx.listen((p0) {
+      listener();
+    });
+  }
+
+  @override
+  void dispose() {
+    _rx.close();
+  }
+
+  @override
+  void listen(AtomListener<T> listener) {
+    _rx.listen(listener);
+  }
+
+  @override
+  void on<E extends T>(AtomListener<E> listener) {
+    _rx.listen((value) {
+      if (value is E) {
+        listener(value);
+      }
+    });
+  }
+
+  @override
+  void removeListener(VoidCallback listener) {
+    _rx.close();
+  }
+
+  @override
+  void removeListeners() {
+    _rx.close();
+  }
+
+  @override
+  void set(T value) {
+    _rx.value = value;
+  }
+
+  @override
+  T get value => _rx.value;
+}
 
 class AtomNotifier<T> implements ListenableAtom<T> {
   AtomNotifier(T value) : _notifier = ValueNotifier(value);
@@ -71,13 +122,13 @@ class AtomObserver<T> extends StatelessWidget {
     required this.atom,
     required this.builder,
   });
-  final AtomNotifier<T> atom;
+  final ListenableAtom<T> atom;
   final AtomBuilder<T> builder;
 
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder<T>(
-      valueListenable: atom._notifier,
+      valueListenable: atom,
       builder: (context, state, _) => builder(context, state),
     );
   }
@@ -89,13 +140,13 @@ class MultiAtomObserver extends StatelessWidget {
     required this.atoms,
     required this.builder,
   });
-  final List<AtomNotifier> atoms;
+  final List<ListenableAtom> atoms;
   final Widget Function(BuildContext context) builder;
 
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
-      animation: Listenable.merge(atoms.map((e) => e._notifier).toList()),
+      animation: Listenable.merge(atoms),
       builder: (context, widget) => builder(context),
     );
   }
@@ -124,12 +175,12 @@ class PolymorphicAtomObserver<T> extends StatelessWidget {
   /// Default widget to be used when current type is not handled
   final Widget Function(T? value)? defaultBuilder;
   final List<TypedAtomHandler<T>> types;
-  final AtomNotifier<T> atom;
+  final ListenableAtom<T> atom;
 
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder<T>(
-      valueListenable: atom._notifier,
+      valueListenable: atom,
       builder: (context, value, _) {
         for (var event in types) {
           if (event.type == value.runtimeType) {

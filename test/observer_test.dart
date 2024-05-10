@@ -1,4 +1,5 @@
 import 'package:atom_notifier/atom_notifier.dart';
+import 'package:atom_notifier/interfaces.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -10,6 +11,34 @@ void main() {
         "sut should rebuild child when atom value changes",
         (tester) async {
           final sut = AtomNotifier<int>(0);
+          final widget = MaterialApp(
+            home: Material(
+              child: AtomObserver<int>(
+                atom: sut,
+                builder: (context, state) {
+                  return Text(state.toString());
+                },
+              ),
+            ),
+          );
+          await tester.pumpWidget(widget);
+
+          expect(find.text("0"), findsOneWidget);
+          expect(find.text("1"), findsNothing);
+
+          sut.set(1);
+          await tester.pumpAndSettle();
+
+          expect(find.text("1"), findsOneWidget);
+          expect(find.text("0"), findsNothing);
+        },
+      );
+
+      testWidgets(
+        "sut should rebuild child when getx atom value changes",
+        (tester) async {
+          final sut = ListenableAtom.getxNotifier(0);
+
           final widget = MaterialApp(
             home: Material(
               child: AtomObserver<int>(

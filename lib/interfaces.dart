@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 
+import 'notifier.dart';
 import 'types.dart';
 
 abstract class Atom<T> implements ValueListenable<T> {
@@ -14,6 +15,9 @@ abstract class Atom<T> implements ValueListenable<T> {
 
 abstract class ListenableAtom<T> extends Atom<T> {
   const ListenableAtom();
+
+  factory ListenableAtom.notifier(T value) => AtomNotifier(value);
+  factory ListenableAtom.getxNotifier(T value) => GetxAtomNotifier(value);
 
   /// Adds a listener to the atom
   void listen(AtomListener<T> listener);
