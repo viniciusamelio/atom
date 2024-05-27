@@ -1,3 +1,6 @@
+## 1.3.0
+- Added debounce method to ListenableAtom
+
 ## 1.2.0
 - Added GetxAtomNotifier class
 - Added notifier() and getxNotifier() factories to ListenableAtom

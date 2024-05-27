@@ -85,6 +85,18 @@ atom.on<MyType>((value){
 });
 ```
 
+### Debouncing listeners
+
+```dart
+atom.debounce(
+    (value) => doSomething(value),
+    interval: const Duration(
+        milliseconds: 500,
+    ),
+);
+```
+
+
 ## Observers
 Observer is a widget which rebuilds everytime your atom value changes.
 
