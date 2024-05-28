@@ -1,4 +1,4 @@
-import 'notifier.dart';
+import 'interfaces.dart';
 
 /// A default application state. E represents an Error class and S represents a Success class
 abstract class AtomAppState<E, S> {
@@ -19,10 +19,9 @@ class ErrorState<E, S> extends AtomAppState<E, S> {
   final E error;
 }
 
-extension DefaultState<E, S> on AtomNotifier<AtomAppState<E, S>> {
+extension DefaultState<E, S> on ListenableAtom<AtomAppState<E, S>> {
   void fromSuccess(S data) => set(SuccessState(data));
   void fromError(E error) => set(ErrorState(error));
-
   void onState({
     void Function()? onInitial,
     void Function()? onLoading,
@@ -53,6 +52,18 @@ extension DefaultState<E, S> on AtomNotifier<AtomAppState<E, S>> {
       });
     }
   }
+}
+
+extension TypedListenableAtomAppState<L, R>
+    on ListenableAtom<AtomAppState<L, R>> {
+  bool get isLoading => value.isLoading();
+  bool get isSuccess => value.isSuccess();
+  bool get isError => value.isLoading();
+  bool get isInitial => value.isInitial();
+
+  LoadingState<L, R> asLoading() => (value as LoadingState<L, R>);
+  SuccessState<L, R> asSuccess() => (value as SuccessState<L, R>);
+  ErrorState<L, R> asError() => (value as ErrorState<L, R>);
 }
 
 extension TypedState<L, R> on AtomAppState<L, R> {
