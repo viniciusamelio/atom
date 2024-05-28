@@ -63,4 +63,5 @@ extension TypedState<L, R> on AtomAppState<L, R> {
   bool isSuccess() => (this is SuccessState<L, R>);
   bool isError() => (this is ErrorState<L, R>);
   bool isLoading() => (this is LoadingState<L, R>);
+  bool isInitial() => (this is InitialState<L, R>);
 }
