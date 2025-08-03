@@ -54,65 +54,50 @@ class GetxAtomNotifier<T> implements ListenableAtom<T> {
   T get value => _rx.value;
 }
 
-class AtomNotifier<T> implements ListenableAtom<T> {
-  AtomNotifier(T value) : _notifier = ValueNotifier(value);
-
-  late ValueNotifier<T> _notifier;
-
+class AtomNotifier<T> extends ValueNotifier<T> implements ListenableAtom<T> {
+  AtomNotifier(T value) : super(value);
+  final List<VoidCallback> _listeners = <VoidCallback>[];
+  bool _disposed = false;
   @override
   void set(T value) {
-    _notifier.value = value;
+    if (_disposed) return;
+    this.value = value;
   }
 
   @override
   void listen(AtomListener<T> listener) {
-    _notifier.addListener(() {
-      listener(_notifier.value);
-    });
-  }
+    callback() {
+      listener(value);
+    }
 
-  @override
-  void dispose() {
-    _notifier.dispose();
+    super.addListener(callback);
+    _listeners.add(callback);
   }
 
   @override
   void on<E extends T>(AtomListener<E> listener) {
-    _notifier.addListener(() {
-      if (_notifier.value is E) {
-        listener((_notifier.value as E));
+    callback() {
+      if (value is E) {
+        listener((value as E));
       }
-    });
+    }
+
+    super.addListener(callback);
+    _listeners.add(callback);
   }
-
-  @override
-  bool operator ==(covariant AtomNotifier<T> other) {
-    if (identical(this, other)) return true;
-
-    return other._notifier == _notifier;
-  }
-
-  @override
-  int get hashCode => _notifier.hashCode;
-
-  @override
-  T get value => _notifier.value;
 
   @override
   void removeListeners() {
-    final currentValue = value;
-    _notifier.dispose();
-    _notifier = ValueNotifier(currentValue);
+    for (var callback in _listeners) {
+      super.removeListener(callback);
+    }
   }
 
   @override
-  void addListener(VoidCallback listener) {
-    _notifier.addListener(listener);
-  }
-
-  @override
-  void removeListener(VoidCallback listener) {
-    _notifier.removeListener(listener);
+  void dispose() {
+    _disposed = true;
+    removeListeners();
+    super.dispose();
   }
 }
 

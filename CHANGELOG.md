@@ -1,3 +1,6 @@
+## 1.4.0
+- Changed AtomNotifier class to extended from value notifier instead of controlling it over a private argument
+
 ## 1.3.0
 - Added debounce method to ListenableAtom
 

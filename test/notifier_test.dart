@@ -116,8 +116,9 @@ void main() {
         sut.dispose();
 
         expect(listenerRan, isFalse);
-
-        expect(() => sut.set(RightState()), throwsFlutterError);
+        sut.set(RightState());
+        expect(listenerRan, isFalse);
+        expect(sut.value, isA<WrongState>());
       });
 
       test("sut should remove non-filtered listener successfully", () async {
